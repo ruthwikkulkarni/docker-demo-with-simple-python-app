@@ -13,8 +13,7 @@ pipeline {
         stage('Cloning Git') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git']]])   
-		        
-            }
+		          }
         }
     
     // Building Docker images
