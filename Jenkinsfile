@@ -1,58 +1,61 @@
 pipeline {
-    agent any 
-    environment {
-				//once you sign up for Docker hub, use that user_id here
-        registry = "ruthwikkulkarni/mypythonapp"
-		
-				//- update your credentials ID after creating credentials for connecting to Docker Hub
-        registryCredential = 'dockerhub_id'
-        dockerImage = ''
+    agent any
+	
+	  tools
+    {
+       maven "Maven"
     }
-    
-    stages {
-        stage('Cloning Git') {
+ stages {
+      stage('checkout') {
+           steps {
+             
+                git branch: 'master', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git'
+             
+          }
+        }
+	 stage('Execute Maven') {
+           steps {
+             
+                sh 'mvn package'             
+          }
+        }
+        
+
+  stage('Docker Build and Tag') {
+           steps {
+              
+                sh 'docker build -t mypythonapp:latest .' 
+                sh 'docker tag mypythonapp ruthwikkulkarni/mypythonapp:latest'
+                //sh 'docker tag mypythonapp ruthwikkulkarni/mypythonapp:$BUILD_NUMBER'
+               
+          }
+        }
+     
+  stage('Publish image to Docker Hub') {
+          
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git']]])   
-		          }
+        withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+          sh  'docker push ruthwikkulkarni/mypythonapp:latest'
+        //  sh  'docker push ruthwikkulkarni/mypythonapp:$BUILD_NUMBER' 
         }
-    
-    // Building Docker images
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry
+                  
+          }
         }
-      }
-    }
-    
-     // Uploading Docker images into Docker Hub
-    stage('Upload Image') {
-     steps{    
-         script {
-            docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+     
+      stage('Run Docker container on Jenkins Agent') {
+             
+            steps 
+			{
+                sh "docker run -d -p 8003:5000 ruthwikkulkarni/mypythonapp"
+ 
             }
-		 
         }
-      }
+ stage('Run Docker container on remote hosts') {
+             
+            steps {
+                sh "docker -H ssh://jenkins@3.140.216.35 run -d -p 8003:5000 ruthwikkulkarni/mypythonapp"
+ 
+            }
+        }
     }
-    
-     // Stopping Docker containers for cleaner Docker run
-     stage('docker stop container') {
-         steps {
-            sh 'docker ps -f name=mypythonappContainer -q | xargs --no-run-if-empty docker container stop'
-            sh 'docker container ls -a -fname=mypythonappContainer -q | xargs -r docker container rm'
-         }
-       }
-    
-    
-    // Running Docker container, make sure port 8096 is opened in 
-    stage('Docker Run') {
-     steps{
-         script {
-            dockerImage.run("-p 8096:5000 --rm --name mypythonappContainer")
-         }
-      }
-    }
-  }
-}
+	}
