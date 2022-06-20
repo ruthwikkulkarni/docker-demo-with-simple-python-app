@@ -5,7 +5,7 @@ pipeline {
         registry = "ruthwikkulkarni/mypythonapp"
 		
 				//- update your credentials ID after creating credentials for connecting to Docker Hub
-        registryCredential = 'DockerHub_ID'
+        registryCredential = 'dockerhub_id'
         dockerImage = ''
     }
     
