@@ -18,7 +18,7 @@ pipeline {
                 sh 'mvn package'             
           }
         }
-        
+       # try to connect
 
   stage('Docker Build and Tag') {
            steps {
