@@ -2,23 +2,20 @@ pipeline {
     agent any
 	  tools
     		{
-      		 maven "mvn"
+      		 maven "maven"
    		 }
  stages {
-      stage('checkout') {
-           steps {
-             
-                git branch: 'master', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git'
-             
-          }
-        }
-	 stage('Execute Maven') {
-           steps {
-             
-                sh 'mvn package'             
-          }
-        }
-
+      stage("Git clone"){
+	steps{
+		git credentialsId: 'github_id', url: 'https://github.com/ruthwikkulkarni/rock-paper-scissors.git'
+			}
+             }
+	 stage("Maven Build"){
+		steps{
+			sh 'mvn --version'
+			sh "mvn clean install"
+                            }
+	 		}
   stage('Docker Build and Tag') {
            steps {
               
