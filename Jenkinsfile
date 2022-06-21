@@ -5,14 +5,7 @@ pipeline {
       		 maven 'maven' 
                    jdk 'jdk'
    		 }
-	environment {
-        	//once you sign up for Docker hub, use that user_id here
-        registry = "ruthwikkulkarni/mypythonapp"
-        	//- update your credentials ID after creating credentials for connecting to Docker Hub
-        registryCredential = 'dockerhub_id'
-        dockerImage = ''
-	}
- 	stages {
+	 	stages {
      	 stage("Git clone"){
 		steps{
 		git credentialsId: 'github_id', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git'
