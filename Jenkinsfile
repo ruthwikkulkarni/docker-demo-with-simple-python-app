@@ -6,6 +6,7 @@ pipeline {
         	//- update your credentials ID after creating credentials for connecting to Docker Hub
         registryCredential = 'dockerhub_id'
         dockerImage = ''
+	}
 	  tools
     		{
       		 maven 'maven' 
