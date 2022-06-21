@@ -14,7 +14,7 @@ pipeline {
  stages {
       stage("Git clone"){
 	steps{
-		git credentialsId: 'github_id', url: 'https://github.com/ruthwikkulkarni/rock-paper-scissors.git'
+		git credentialsId: 'github_id', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git'
 			}
              }
 	 stage ('Initialize') {
