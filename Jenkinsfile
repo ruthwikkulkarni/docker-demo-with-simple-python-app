@@ -10,7 +10,6 @@ pipeline {
              
                 git branch: 'master', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git'
              
-		   
           }
         }
 	 stage('Execute Maven') {
