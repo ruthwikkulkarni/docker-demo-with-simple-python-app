@@ -2,7 +2,8 @@ pipeline {
     agent any
 	  tools
     		{
-      		 maven "maven"
+      		 maven 'Maven' 
+                   jdk 'jdk'
    		 }
  stages {
       stage("Git clone"){
@@ -10,6 +11,14 @@ pipeline {
 		git credentialsId: 'github_id', url: 'https://github.com/ruthwikkulkarni/rock-paper-scissors.git'
 			}
              }
+	 stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                ''' 
+            }
+        }
 	 stage("Maven Build"){
 		steps{
 			sh 'mvn --version'
