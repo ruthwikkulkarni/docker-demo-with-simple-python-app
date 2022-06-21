@@ -7,14 +7,14 @@ pipeline {
         registryCredential = 'dockerhub_id'
         dockerImage = ''
 	}
-	  tools
+	 tools
     		{
       		 maven 'maven' 
                    jdk 'jdk'
    		 }
- stages {
-      stage("Git clone"){
-	steps{
+ 	stages {
+     	 stage("Git clone"){
+		steps{
 		git credentialsId: 'github_id', url: 'https://github.com/ruthwikkulkarni/docker-demo-with-simple-python-app.git'
 			}
              }
