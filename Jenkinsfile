@@ -25,15 +25,15 @@ pipeline {
 			sh "mvn clean install"
                             }
 	 		}
-  stage('Docker Build and Tag') {
-           steps {
-              
-                sh 'docker build -t mypythonapp:latest .' 
-                sh 'docker tag mypythonapp ruthwikkulkarni/mypythonapp:latest'
-                //sh 'docker tag mypythonapp ruthwikkulkarni/mypythonapp:$BUILD_NUMBER'
-               
-          }
+	 
+	 stage('Building image') {
+		  // Building Docker images
+      steps{
+        script {
+          dockerImage = docker.build registry
         }
+      }
+    }
      
   stage('Publish image to Docker Hub') {
           
