@@ -1,5 +1,10 @@
 pipeline {
     agent any
+	 tools
+    		{
+      		 maven 'maven' 
+                   jdk 'jdk'
+   		 }
 	environment {
         	//once you sign up for Docker hub, use that user_id here
         registry = "ruthwikkulkarni/mypythonapp"
@@ -7,11 +12,6 @@ pipeline {
         registryCredential = 'dockerhub_id'
         dockerImage = ''
 	}
-	 tools
-    		{
-      		 maven 'maven' 
-                   jdk 'jdk'
-   		 }
  	stages {
      	 stage("Git clone"){
 		steps{
